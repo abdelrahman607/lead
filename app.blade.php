@@ -25,69 +25,76 @@
     </script>
 </head>
 
-<body class="bg-slate-100 min-h-screen flex">
+<body class="bg-slate-100 min-h-screen flex " x-data="{ sidebarOpen: false }">
 
+<nav class=" navbar navbar-expand-lg bg-body-tertiary xl:hidden w-100 " style="position: absolute;top: 0">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{{route('leads.index')}}">Leads Manager</a>
+    <a class="navbar-brand" href="{{route('leads.archived')}}">Archieve</a>
 
-<aside class="w-64 bg-dark text-white hidden md:flex flex-col">
-    <div class="px-6 py-5 text-2xl font-bold border-b border-slate-700">
-        Leads<span class="text-primary">.</span>
-    </div>
+  </div>
+</nav>
 
-    <nav class="flex-1 px-4 py-6 space-y-2 text-sm">
-        <a href="{{ route('leads.index') }}"
-           class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
-            📋 <span>Leads</span>
-        </a>
+<aside :class="sidebarOpen ? 'fixed inset-0 flex z-50' : 'hidden xl:flex'"
+       class="bg-gray-800 text-white flex-col w-64 p-4">
 
-        <a href="{{ route('leads.archived') }}"
-           class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
-            🗄️ <span>Archived</span>
-        </a>
-    </nav>
+  <div class="px-6 py-5 text-2xl font-bold border-b border-slate-700 flex justify-between items-center">
+    Leads<span class="text-primary">.</span>
+    <button @click="sidebarOpen = false" class="md:hidden text-white">&times;</button>
+  </div>
 
-    <div class="px-6 py-4 text-xs text-slate-400 border-t border-slate-700">
-        © {{ date('Y') }} Leads Manager
-    </div>
+  <nav class="flex-1 px-4 py-6 space-y-2 text-sm">
+    <a href="{{ route('leads.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
+        📋 <span>Leads</span>
+    </a>
+    <a href="{{ route('leads.archived') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition">
+        🗄️ <span>Archived</span>
+    </a>
+  </nav>
+
+  <div class="px-6 py-4 text-xs text-slate-400 border-t border-slate-700">
+    © {{ date('Y') }} Leads Manager
+  </div>
 </aside>
 
+<div class="flex-1 flex flex-col md:ml-70">
 
-<div class="flex-1 flex flex-col">
+  <header class="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
+    <h1 class="text-xl font-semibold text-slate-800">
+        @yield('title', 'Dashboard')
+    </h1>
 
+    <a href="{{ route('leads.create') }}" class="bg-primary sm:hidden text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-600 transition">
+        + Add Lead
+    </a>
+  </header>
 
-    <header class="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
-        <h1 class="text-xl font-semibold text-slate-800">
-            @yield('title', 'Dashboard')
-        </h1>
+  <main class="p-6">
+    <!-- Success Message -->
+    <div x-data="{ show: {{ session('success') ? 'true' : 'false' }} }"
+         x-show="show"
+         x-transition
+         x-init="setTimeout(() => show = false, 3000)"
+         class="fixed top-5 right-5 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-2">
 
-        <a href="{{ route('leads.create') }}"
-           class="bg-primary text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-600 transition">
-            + Add Lead
-        </a>
-    </header>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+           stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+      </svg>
 
-    <main class="p-6">
+      <span>{{ session('success') }}</span>
+      <button @click="show = false" class="ml-4 text-white font-bold">&times;</button>
+    </div>
 
-<div x-data="{ show: {{ session('success') ? 'true' : 'false' }} }"
-     x-show="show"
-     x-transition
-     x-init="setTimeout(() => show = false, 3000)"
-     class="fixed top-5 right-5 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-2">
-
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-         stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-    </svg>
-
-    <span>{{ session('success') }}</span>
-
-    <button @click="show = false" class="ml-4 text-white font-bold">&times;</button>
+    @yield('content')
+  </main>
 </div>
-
-
-        @yield('content')
-
-    </main>
-</div>
-
+<style>
+    *{
+        font-size: 20px;
+    }
+</style>
 </body>
+
 </html>
+
