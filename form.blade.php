@@ -22,7 +22,7 @@
 
     <div>
         <label class="block text-sm font-medium mb-1 text-slate-700">Phone</label>
-        <input type="text" name="phone"
+        <input type="number" name="phone"
                class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                value="{{ old('phone', $lead->phone ?? '') }}">
     </div>
