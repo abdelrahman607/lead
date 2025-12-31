@@ -35,7 +35,7 @@ class LeadController extends Controller
     $request->validate([
         'name'   => 'required|string|max:255',
         'email'  => 'required|email|unique:leads,email',
-        'phone'  => 'nullable|string',
+        'phone'  => 'nullable|integer',
         'status' => 'required|in:new,contacted,closed'
     ]);
 
@@ -64,7 +64,7 @@ class LeadController extends Controller
     $request->validate([
         'name'   => 'required|string|max:255',
         'email'  => 'required|email|unique:leads,email,' . $lead->id,
-        'phone'  => 'nullable|string',
+        'phone'  => 'nullable|integer',
         'status' => 'required|in:new,contacted,closed'
     ]);
 
